@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[34,)"
+license="MIT"
+# TODO: issueTrackerURL="http://my.issue.tracker/"
+
+[[mods]]
+modId="festive_creepers"
+version="${file.jarVersion}" #TODO: version
+displayName="Festive Creepers"
+
+# TODO: displayURL="http://example.com/"
+# TODO: logoFile="examplemod.png" #optional
+authors="ochotonida"
+description='''
+Adds a new festive creeper
+'''
+
+[[dependencies.examplemod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[34,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.examplemod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.3,1.17)"
+    ordering="NONE"
+    side="BOTH"
