@@ -1,8 +1,14 @@
 package festivecreepers.common.init;
 
 import festivecreepers.FestiveCreepers;
+import festivecreepers.client.FestiveHatLayer;
+import festivecreepers.client.FireworksCrateRenderer;
 import festivecreepers.common.entity.FestiveCreeperEntity;
 import festivecreepers.common.entity.FireworksCrateEntity;
+import festivecreepers.common.entity.FireworksCrateMinecartEntity;
+import net.minecraft.client.renderer.entity.CreeperRenderer;
+import net.minecraft.client.renderer.entity.MinecartRenderer;
+import net.minecraft.client.renderer.entity.TNTMinecartRenderer;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
@@ -16,6 +22,7 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -29,13 +36,26 @@ public class EntityTypes {
 
     public static EntityType<FestiveCreeperEntity> FESTIVE_CREEPER = EntityType.Builder.create(FestiveCreeperEntity::new, EntityClassification.MONSTER).size(0.6F, 1.7F).trackingRange(8).build(new ResourceLocation(FestiveCreepers.MODID, "festive_creeper").toString());
     public static EntityType<FireworksCrateEntity> FIREWORKS_CRATE = EntityType.Builder.<FireworksCrateEntity>create(FireworksCrateEntity::new, EntityClassification.MISC).immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10).build(new ResourceLocation(FestiveCreepers.MODID, "fireworks_crate").toString());
+    public static EntityType<FireworksCrateMinecartEntity> FIREWORKS_CRATE_MINECART = EntityType.Builder.<FireworksCrateMinecartEntity>create(FireworksCrateMinecartEntity::new, EntityClassification.MISC).size(0.98F, 0.7F).trackingRange(8).build(new ResourceLocation(FestiveCreepers.MODID, "fireworks_crate_minecart").toString());
 
     public static void register(IForgeRegistry<EntityType<?>> registry) {
         FESTIVE_CREEPER.setRegistryName(FestiveCreepers.MODID, "festive_creeper");
         FIREWORKS_CRATE.setRegistryName(FestiveCreepers.MODID, "fireworks_crate");
-        registry.registerAll(FESTIVE_CREEPER, FIREWORKS_CRATE);
+        FIREWORKS_CRATE_MINECART.setRegistryName(FestiveCreepers.MODID, "fireworks_crate_minecart");
+
+        registry.registerAll(FESTIVE_CREEPER, FIREWORKS_CRATE, FIREWORKS_CRATE_MINECART);
         EntitySpawnPlacementRegistry.register(FESTIVE_CREEPER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawnInLight);
         GlobalEntityTypeAttributes.put(FESTIVE_CREEPER, CreeperEntity.registerAttributes().create());
+    }
+
+    public static void registerRenderers() {
+        RenderingRegistry.registerEntityRenderingHandler(EntityTypes.FESTIVE_CREEPER, (manager) -> {
+            CreeperRenderer renderer = new CreeperRenderer(manager);
+            renderer.addLayer(new FestiveHatLayer(renderer));
+            return renderer;
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityTypes.FIREWORKS_CRATE, FireworksCrateRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityTypes.FIREWORKS_CRATE_MINECART, MinecartRenderer::new);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

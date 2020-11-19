@@ -1,6 +1,9 @@
 {
   "entity.festive_creepers.festive_creeper": "Festive Creeper",
+  "entity.festive_creepers.fireworks_crate": "Fireworks Crate",
+  "entity.festive_creepers.fireworks_crate_minecart": "Fireworks Crate Minecart",
   "item.festive_creepers.festive_creeper_spawn_egg": "Festive Creeper Spawn Egg",
   "item.festive_creepers.firework_powder": "Firework Powder",
+  "item.festive_creepers.fireworks_crate_minecart": "Fireworks Crate Minecart",
   "block.festive_creepers.fireworks_crate": "Fireworks Crate"
 }

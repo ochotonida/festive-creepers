@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "festive_creepers:item/firework_powder"
+    "layer0": "festive_creepers:item/fireworks_crate_minecart"
   }
 }

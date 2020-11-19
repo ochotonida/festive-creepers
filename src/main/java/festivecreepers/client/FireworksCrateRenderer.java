@@ -46,6 +46,7 @@ public class FireworksCrateRenderer extends EntityRenderer<FireworksCrateEntity>
         super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
     }
 
+    @Override
     public @Nonnull ResourceLocation getEntityTexture(FireworksCrateEntity entity) {
         return PlayerContainer.LOCATION_BLOCKS_TEXTURE;
     }

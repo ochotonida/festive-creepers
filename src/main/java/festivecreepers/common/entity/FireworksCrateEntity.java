@@ -11,9 +11,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -30,12 +28,6 @@ public class FireworksCrateEntity extends TNTEntity {
         super(type, world);
     }
 
-    @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FIREWORK_NBT, FireworksHelper.createRandomExplosion(rand, FireworkRocketItem.Shape.LARGE_BALL));
-    }
-
     public FireworksCrateEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter) {
         this(EntityTypes.FIREWORKS_CRATE, world);
         setPosition(x, y, z);
@@ -49,6 +41,12 @@ public class FireworksCrateEntity extends TNTEntity {
     }
 
     @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(FIREWORK_NBT, FireworksHelper.createRandomExplosion(rand, FireworkRocketItem.Shape.LARGE_BALL));
+    }
+
+    @Override
     public @Nonnull IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
@@ -56,10 +54,8 @@ public class FireworksCrateEntity extends TNTEntity {
     @Override
     public void tick() {
         super.tick();
-        if (getFuse() > 0) {
-            if (!world.isRemote() && getFuse() <= 60 && getFuse() % 10 == 0) {
-                FireworksHelper.spawnRandomRocket(rand, this);
-            }
+        if (!world.isRemote() && getFuse() > 0 && getFuse() <= 60 && getFuse() % 10 == 0) {
+            FireworksHelper.spawnRandomRocket(rand, this);
         }
     }
 

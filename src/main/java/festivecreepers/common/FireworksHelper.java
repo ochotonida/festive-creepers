@@ -8,24 +8,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class FireworksHelper {
 
+    private static final List<DyeColor> colors = Arrays.asList(DyeColor.RED, DyeColor.ORANGE, DyeColor.YELLOW, DyeColor.LIME, DyeColor.GREEN, DyeColor.CYAN, DyeColor.LIGHT_BLUE, DyeColor.BLUE, DyeColor.PURPLE, DyeColor.MAGENTA, DyeColor.PINK, DyeColor.WHITE);
+
     public static CompoundNBT createRandomExplosion(Random random, FireworkRocketItem.Shape shape) {
         ListNBT explosionList = new ListNBT();
         FireworksHelper.FireworkExplosionBuilder builder = new FireworksHelper.FireworkExplosionBuilder();
-        builder.addColor(DyeColor.values()[random.nextInt(DyeColor.values().length)].getFireworkColor());
+        builder.addColor(colors.get(random.nextInt(colors.size())).getFireworkColor());
         if (random.nextBoolean()) {
-            builder.addColor(DyeColor.values()[random.nextInt(DyeColor.values().length)].getFireworkColor());
+            builder.addColor(colors.get(random.nextInt(colors.size())).getFireworkColor());
         }
         if (random.nextBoolean()) {
-            builder.addFadeColor(DyeColor.values()[random.nextInt(DyeColor.values().length)].getFireworkColor());
-            builder.addFadeColor(DyeColor.values()[random.nextInt(DyeColor.values().length)].getFireworkColor());
+            builder.addFadeColor(colors.get(random.nextInt(colors.size())).getFireworkColor());
+            builder.addFadeColor(colors.get(random.nextInt(colors.size())).getFireworkColor());
         }
 
         if (random.nextBoolean()) {
@@ -46,7 +48,7 @@ public class FireworksHelper {
         ItemStack rocketStack = new ItemStack(Items.FIREWORK_ROCKET);
         FireworkRocketItem.Shape shape = FireworkRocketItem.Shape.get(random.nextInt(FireworkRocketItem.Shape.values().length));
         CompoundNBT fireworks = createRandomExplosion(random, shape);
-        fireworks.putByte("Flight", (byte) (random.nextInt(3) + 1));
+        fireworks.putByte("Flight", (byte) (random.nextInt(2) + 1));
         rocketStack.getOrCreateTag().put("Fireworks", fireworks);
 
         FireworkRocketEntity rocketEntity = new FireworkRocketEntity(shooter.world, rocketStack, shooter, shooter.getPosX(), shooter.getPosYEye() - (double)0.15F, shooter.getPosZ(), true);

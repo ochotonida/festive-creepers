@@ -6,11 +6,9 @@
     "X#X"
   ],
   "key": {
-    "#": [
-      {
-        "tag": "forge:sand"
-      }
-    ],
+    "#": {
+      "tag": "forge:sand"
+    },
     "X": {
       "item": "festive_creepers:firework_powder"
     }
