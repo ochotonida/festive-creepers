@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#X#",
+    "X#X"
+  ],
+  "key": {
+    "#": [
+      {
+        "tag": "forge:sand"
+      }
+    ],
+    "X": {
+      "item": "festive_creepers:firework_powder"
+    }
+  },
+  "result": {
+    "item": "festive_creepers:fireworks_crate"
+  }
+}

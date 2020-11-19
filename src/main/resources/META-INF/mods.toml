@@ -1,14 +1,14 @@
 modLoader="javafml"
 loaderVersion="[34,)"
 license="MIT"
-# TODO: issueTrackerURL="http://my.issue.tracker/"
+issueTrackerURL="https://github.com/ochotonida/festive-creepers/issues"
 
 [[mods]]
 modId="festive_creepers"
 version="${file.jarVersion}" #TODO: version
 displayName="Festive Creepers"
 
-# TODO: displayURL="http://example.com/"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/festive-creepers"
 # TODO: logoFile="examplemod.png" #optional
 authors="ochotonida"
 description='''

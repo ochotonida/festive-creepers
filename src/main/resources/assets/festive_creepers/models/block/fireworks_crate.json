@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "top": "festive_creepers:block/fireworks_crate_top",
+    "side": "festive_creepers:block/fireworks_crate_side"
+  }
+}
