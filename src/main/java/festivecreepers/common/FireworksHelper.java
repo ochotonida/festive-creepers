@@ -46,7 +46,7 @@ public class FireworksHelper {
 
     public static void spawnRandomRocket(Random random, Entity shooter) {
         ItemStack rocketStack = new ItemStack(Items.FIREWORK_ROCKET);
-        FireworkRocketItem.Shape shape = FireworkRocketItem.Shape.get(random.nextInt(FireworkRocketItem.Shape.values().length));
+        FireworkRocketItem.Shape shape = FireworkRocketItem.Shape.values()[(random.nextInt(FireworkRocketItem.Shape.values().length))];
         CompoundNBT fireworks = createRandomExplosion(random, shape);
         fireworks.putByte("Flight", (byte) (random.nextInt(2) + 1));
         rocketStack.getOrCreateTag().put("Fireworks", fireworks);

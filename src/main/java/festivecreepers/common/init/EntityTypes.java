@@ -19,6 +19,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -48,6 +50,7 @@ public class EntityTypes {
         GlobalEntityTypeAttributes.put(FESTIVE_CREEPER, CreeperEntity.registerAttributes().create());
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         RenderingRegistry.registerEntityRenderingHandler(EntityTypes.FESTIVE_CREEPER, (manager) -> {
             CreeperRenderer renderer = new CreeperRenderer(manager);

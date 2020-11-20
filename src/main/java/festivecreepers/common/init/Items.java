@@ -1,6 +1,7 @@
 package festivecreepers.common.init;
 
 import festivecreepers.FestiveCreepers;
+import festivecreepers.common.item.FestiveHatItem;
 import festivecreepers.common.item.FireworksCrateMinecartItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -22,5 +23,6 @@ public class Items {
         registry.register(new Item(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(FestiveCreepers.MODID, "firework_powder"));
         registry.register(new BlockItem(Blocks.FIREWORKS_CRATE, new Item.Properties().group(ItemGroup.REDSTONE)).setRegistryName(FestiveCreepers.MODID, "fireworks_crate"));
         registry.register(new FireworksCrateMinecartItem(new Item.Properties().group(ItemGroup.TRANSPORTATION).maxStackSize(1)).setRegistryName(FestiveCreepers.MODID, "fireworks_crate_minecart"));
+        registry.register(new FestiveHatItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(FestiveCreepers.MODID, "festive_hat"));
     }
 }
