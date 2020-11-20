@@ -5,14 +5,14 @@ issueTrackerURL="https://github.com/ochotonida/festive-creepers/issues"
 
 [[mods]]
 modId="festive_creepers"
-version="${file.jarVersion}" #TODO: version
+version="1.16.4-1.0.0"
 displayName="Festive Creepers"
 
 displayURL="https://www.curseforge.com/minecraft/mc-mods/festive-creepers"
-# TODO: logoFile="examplemod.png" #optional
+logoFile="logo.png"
 authors="ochotonida"
 description='''
-Adds a new festive creeper
+Adds festive creepers and fireworks crates
 '''
 
 [[dependencies.examplemod]]
