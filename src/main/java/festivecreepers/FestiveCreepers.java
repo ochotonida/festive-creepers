@@ -5,6 +5,7 @@ import festivecreepers.common.init.Blocks;
 import festivecreepers.common.init.EntityTypes;
 import festivecreepers.common.init.Items;
 import festivecreepers.common.item.FireworksCrateMinecartItem;
+import festivecreepers.common.network.NetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
@@ -38,7 +39,8 @@ public class FestiveCreepers {
 
         @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent event) {
-            event.enqueueWork(() -> DispenserBlock.registerDispenseBehavior(Blocks.FIREWORKS_CRATE, new DefaultDispenseItemBehavior() {
+            event.enqueueWork(() -> {
+                DispenserBlock.registerDispenseBehavior(Blocks.FIREWORKS_CRATE, new DefaultDispenseItemBehavior() {
                 protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
                     World world = source.getWorld();
                     BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
@@ -47,9 +49,10 @@ public class FestiveCreepers {
                     world.playSound(null, crate.getPosX(), crate.getPosY(), crate.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1, 1);
                     stack.shrink(1);
                     return stack;
-                }
-            }));
-            event.enqueueWork(() -> DispenserBlock.registerDispenseBehavior(Items.FIREWORKS_CRATE_MINECART, FireworksCrateMinecartItem.DISPENSE_BEHAVIOR));
+                }});
+                DispenserBlock.registerDispenseBehavior(Items.FIREWORKS_CRATE_MINECART, FireworksCrateMinecartItem.DISPENSE_BEHAVIOR);
+                NetworkHandler.register();
+            });
         }
 
         @SubscribeEvent

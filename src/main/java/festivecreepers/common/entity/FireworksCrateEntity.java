@@ -1,28 +1,22 @@
 package festivecreepers.common.entity;
 
-import festivecreepers.common.FireworksHelper;
 import festivecreepers.common.init.EntityTypes;
+import festivecreepers.common.network.FireworkExplosionPacket;
+import festivecreepers.common.network.NetworkHandler;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.item.FireworkRocketItem;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class FireworksCrateEntity extends TNTEntity {
-
-    private static final DataParameter<CompoundNBT> FIREWORK_NBT = EntityDataManager.createKey(FireworksCrateEntity.class, DataSerializers.COMPOUND_NBT);
 
     public FireworksCrateEntity(EntityType<? extends FireworksCrateEntity> type, World world) {
         super(type, world);
@@ -41,12 +35,6 @@ public class FireworksCrateEntity extends TNTEntity {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FIREWORK_NBT, FireworksHelper.createRandomExplosion(rand, FireworkRocketItem.Shape.LARGE_BALL));
-    }
-
-    @Override
     public @Nonnull IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
@@ -61,17 +49,13 @@ public class FireworksCrateEntity extends TNTEntity {
 
     @Override
     protected void explode() {
-        world.setEntityState(this, (byte)17);
-        super.explode();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void handleStatusUpdate(byte id) {
-        if (id == 17 && world.isRemote) {
-            CompoundNBT fireworks = dataManager.get(FIREWORK_NBT);
-            Vector3d vector3d = getMotion();
-            world.makeFireworks(getPosX(), getPosY(), getPosZ(), vector3d.x, vector3d.y, vector3d.z, fireworks);
-        }
-        super.handleStatusUpdate(id);
+        NetworkHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new FireworkExplosionPacket(
+                FireworksHelper.createRandomExplosion(rand, FireworkRocketItem.Shape.LARGE_BALL),
+                getPosX(),
+                getPosY(),
+                getPosZ(),
+                getMotion()
+        ));
+        world.createExplosion(this, this.getPosX(), this.getPosYHeight(0.0625), this.getPosZ(), 4, Explosion.Mode.NONE);
     }
 }

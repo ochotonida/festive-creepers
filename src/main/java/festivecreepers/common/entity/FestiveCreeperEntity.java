@@ -1,34 +1,21 @@
 package festivecreepers.common.entity;
 
-import festivecreepers.common.FireworksHelper;
+import festivecreepers.common.network.FireworkExplosionPacket;
+import festivecreepers.common.network.NetworkHandler;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.item.FireworkRocketItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 
 public class FestiveCreeperEntity extends CreeperEntity {
 
-    private static final DataParameter<CompoundNBT> FIREWORK_NBT = EntityDataManager.createKey(FestiveCreeperEntity.class, DataSerializers.COMPOUND_NBT);
-
     public FestiveCreeperEntity(EntityType<? extends FestiveCreeperEntity> type, World world) {
         super(type, world);
-    }
-
-    @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FIREWORK_NBT, FireworksHelper.createRandomExplosion(getRNG(), getRNG().nextInt(5) == 0 ? FireworkRocketItem.Shape.CREEPER : FireworkRocketItem.Shape.LARGE_BALL));
     }
 
     @Override
@@ -42,7 +29,13 @@ public class FestiveCreeperEntity extends CreeperEntity {
                 explosion.doExplosionA();
                 explosion.doExplosionB(false);
             }
-            world.setEntityState(this, (byte)17);
+            NetworkHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new FireworkExplosionPacket(
+                    FireworksHelper.createRandomExplosion(getRNG(), getRNG().nextInt(5) == 0 ? FireworkRocketItem.Shape.CREEPER : FireworkRocketItem.Shape.LARGE_BALL),
+                    getPosX(),
+                    getPosY(),
+                    getPosZ(),
+                    getMotion()
+            ));
             remove();
             spawnLingeringCloud();
         }
@@ -51,15 +44,5 @@ public class FestiveCreeperEntity extends CreeperEntity {
     @Override
     protected @Nonnull ResourceLocation getLootTable() {
         return super.getLootTable();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void handleStatusUpdate(byte id) {
-        if (id == 17 && world.isRemote) {
-            CompoundNBT fireworks = dataManager.get(FIREWORK_NBT);
-            Vector3d vector3d = getMotion();
-            world.makeFireworks(getPosX(), getPosY(), getPosZ(), vector3d.x, vector3d.y, vector3d.z, fireworks);
-        }
-        super.handleStatusUpdate(id);
     }
 }

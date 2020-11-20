@@ -1,9 +1,10 @@
 package festivecreepers.common.entity;
 
-import festivecreepers.common.FireworksHelper;
 import festivecreepers.common.init.Blocks;
 import festivecreepers.common.init.EntityTypes;
 import festivecreepers.common.init.Items;
+import festivecreepers.common.network.FireworkExplosionPacket;
+import festivecreepers.common.network.NetworkHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -14,9 +15,6 @@ import net.minecraft.item.FireworkRocketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -25,15 +23,12 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 
 public class FireworksCrateMinecartEntity extends AbstractMinecartEntity {
-
-    private static final DataParameter<CompoundNBT> FIREWORK_NBT = EntityDataManager.createKey(FireworksCrateMinecartEntity.class, DataSerializers.COMPOUND_NBT);
 
     private int rocketsRemaining = 5;
     private int rocketCooldown = 0;
@@ -49,12 +44,6 @@ public class FireworksCrateMinecartEntity extends AbstractMinecartEntity {
         prevPosX = x;
         prevPosY = y;
         prevPosZ = z;
-    }
-
-    @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FIREWORK_NBT, FireworksHelper.createRandomExplosion(rand, FireworkRocketItem.Shape.LARGE_BALL));
     }
 
     public AbstractMinecartEntity.Type getMinecartType() {
@@ -97,7 +86,6 @@ public class FireworksCrateMinecartEntity extends AbstractMinecartEntity {
                 explodeCart(horizontalMag(getMotion()));
             }
         }
-
     }
 
     @Override
@@ -115,13 +103,14 @@ public class FireworksCrateMinecartEntity extends AbstractMinecartEntity {
 
     protected void explodeCart(double radiusModifier) {
         if (!world.isRemote()) {
-            world.setEntityState(this, (byte) 17);
-            double explosionMultiplier = Math.sqrt(radiusModifier);
-            if (explosionMultiplier > 5) {
-                explosionMultiplier = 5;
-            }
-
-            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (float)(4 + rand.nextDouble() * 1.5 * explosionMultiplier), Explosion.Mode.BREAK);
+            NetworkHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new FireworkExplosionPacket(
+                    FireworksHelper.createRandomExplosion(rand, FireworkRocketItem.Shape.LARGE_BALL),
+                    getPosX(),
+                    getPosY(),
+                    getPosZ(),
+                    getMotion()
+            ));
+            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (float)(4 + rand.nextDouble() * 1.5 * Math.min(5, Math.sqrt(radiusModifier))), Explosion.Mode.NONE);
             remove();
         }
     }
@@ -132,16 +121,6 @@ public class FireworksCrateMinecartEntity extends AbstractMinecartEntity {
 
     public boolean canExplosionDestroyBlock(Explosion explosionIn, IBlockReader worldIn, BlockPos pos, BlockState blockStateIn, float explosionPower) {
         return (!blockStateIn.isIn(BlockTags.RAILS) && !worldIn.getBlockState(pos.up()).isIn(BlockTags.RAILS)) && super.canExplosionDestroyBlock(explosionIn, worldIn, pos, blockStateIn, explosionPower);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void handleStatusUpdate(byte id) {
-        if (id == 17 && world.isRemote) {
-            CompoundNBT fireworks = dataManager.get(FIREWORK_NBT);
-            Vector3d vector3d = getMotion();
-            world.makeFireworks(getPosX(), getPosY(), getPosZ(), vector3d.x, vector3d.y, vector3d.z, fireworks);
-        }
-        super.handleStatusUpdate(id);
     }
 
     @Override
