@@ -54,5 +54,6 @@ public class FireworkExplosionPacket {
                 Minecraft.getInstance().world.makeFireworks(x, y, z, motionX, motionY, motionZ, fireworks);
             }
         });
+        context.get().setPacketHandled(true);
     }
 }

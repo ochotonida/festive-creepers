@@ -81,7 +81,7 @@ public class FireworksCrateMinecartEntity extends AbstractMinecartEntity {
         if (receivingPower && !world.isRemote() && rocketCooldown <= 0) {
             if (rocketsRemaining-- > 0) {
                 FireworksHelper.spawnRandomRocket(rand, this);
-                rocketCooldown = 30;
+                rocketCooldown = 10;
             } else {
                 explodeCart(horizontalMag(getMotion()));
             }

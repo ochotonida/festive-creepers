@@ -31,6 +31,25 @@
       "rolls": 1,
       "entries": [
         {
+          "type": "minecraft:item",
+          "name": "festive_creepers:festive_hat"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "minecraft:random_chance_with_looting",
+          "chance": 0.04,
+          "looting_multiplier": 0.02
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
           "type": "minecraft:tag",
           "name": "minecraft:creeper_drop_music_discs",
           "expand": true
