@@ -28,7 +28,6 @@ public class FestiveCreepers {
 
     public static final String MODID = "festive_creepers";
 
-
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
 

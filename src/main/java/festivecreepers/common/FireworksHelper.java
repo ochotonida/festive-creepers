@@ -1,4 +1,4 @@
-package festivecreepers.common.entity;
+package festivecreepers.common;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.FireworkRocketEntity;

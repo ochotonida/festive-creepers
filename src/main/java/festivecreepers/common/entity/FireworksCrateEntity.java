@@ -1,5 +1,6 @@
 package festivecreepers.common.entity;
 
+import festivecreepers.common.FireworksHelper;
 import festivecreepers.common.init.EntityTypes;
 import festivecreepers.common.network.FireworkExplosionPacket;
 import festivecreepers.common.network.NetworkHandler;
