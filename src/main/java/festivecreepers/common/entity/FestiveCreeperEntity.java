@@ -1,11 +1,14 @@
 package festivecreepers.common.entity;
 
+import festivecreepers.common.FireworksHelper;
 import festivecreepers.common.network.FireworkExplosionPacket;
 import festivecreepers.common.network.NetworkHandler;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.item.FireworkRocketItem;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -53,7 +56,29 @@ public class FestiveCreeperEntity extends CreeperEntity {
     }
 
     @Override
-    protected @Nonnull ResourceLocation getLootTable() {
+    public void ignite() {
+        if (!world.isRemote() && !hasIgnited()) {
+            playSound(SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, 3, 1);
+        }
+        super.ignite();
+
+    }
+
+    @Override
+    public void tick() {
+        if (isAlive() && hasIgnited()) {
+            setMotion(getMotion().getX(), 1, getMotion().getZ());
+            if (world.isRemote) {
+                world.addParticle(ParticleTypes.FIREWORK, getPosX(), getPosY() - 0.3, getPosZ(), rand.nextGaussian() * 0.05, -getMotion().y * 0.5, rand.nextGaussian() * 0.05);
+            }
+        }
+
+        super.tick();
+    }
+
+    @Override
+    protected @Nonnull
+    ResourceLocation getLootTable() {
         return super.getLootTable();
     }
 }
