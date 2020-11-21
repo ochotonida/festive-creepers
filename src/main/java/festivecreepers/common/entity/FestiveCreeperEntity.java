@@ -22,7 +22,7 @@ public class FestiveCreeperEntity extends CreeperEntity {
     protected void explode() {
         if (!world.isRemote()) {
             Explosion.Mode mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-            float explosionMultiplier = this.isCharged() ? 2 : 1;
+            float explosionMultiplier = isCharged() ? 2 : 1;
             dead = true;
             Explosion explosion = new Explosion(world, this, null, null, getPosX(), getPosY(), getPosZ(), explosionRadius * explosionMultiplier, false, mode);
             if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(world, explosion)) {
@@ -36,6 +36,17 @@ public class FestiveCreeperEntity extends CreeperEntity {
                     getPosZ(),
                     getMotion()
             ));
+
+            if (isCharged()) {
+                double direction = rand.nextDouble() * 2 * Math.PI;
+                for (int i = 0; i < 3; i++) {
+                    FireworksCrateEntity crate = new FireworksCrateEntity(world, getPosX(), getPosY(), getPosZ(), this);
+                    crate.setMotion(0.5 * Math.cos(direction + i * Math.PI * 2 / 3), 0.5, 0.5 * Math.sin(direction + i * Math.PI * 2 / 3));
+                    crate.setFuse(100 + rand.nextInt(20));
+                    world.addEntity(crate);
+                }
+            }
+
             remove();
             spawnLingeringCloud();
         }
