@@ -43,7 +43,7 @@ public class FireworksCrateEntity extends TNTEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!world.isRemote() && getFuse() > 0 && getFuse() <= 60 && getFuse() % 10 == 0) {
+        if (!world.isRemote() && getFuse() > 0 && getFuse() <= 50 && getFuse() % 10 == 0) {
             FireworksHelper.spawnRandomRocket(rand, this);
         }
     }
