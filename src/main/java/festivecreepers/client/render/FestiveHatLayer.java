@@ -1,9 +1,9 @@
-package festivecreepers.client;
+package festivecreepers.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import festivecreepers.FestiveCreepers;
-import festivecreepers.client.model.FestiveHatModel;
+import festivecreepers.client.render.model.FestiveHatModel;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
@@ -26,8 +26,8 @@ public class FestiveHatLayer extends LayerRenderer<CreeperEntity, CreeperModel<C
 
     @Override
     public void render(MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight, CreeperEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityCutout(new ResourceLocation(FestiveCreepers.MODID, "textures/entity/festive_hat.png")));
         model.hat.copyModelAngles(getEntityModel().head);
+        IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityCutoutNoCull(new ResourceLocation(FestiveCreepers.MODID, "textures/entity/festive_hat.png")));
         model.render(matrixStack, builder, packedLight, LivingRenderer.getPackedOverlay(entity, 0), 1, 1, 1, 1);
     }
 }

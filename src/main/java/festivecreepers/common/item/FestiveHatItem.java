@@ -1,7 +1,7 @@
 package festivecreepers.common.item;
 
 import festivecreepers.FestiveCreepers;
-import festivecreepers.client.model.FestiveHatModel;
+import festivecreepers.client.render.model.FestiveHatModel;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;

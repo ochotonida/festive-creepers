@@ -1,14 +1,14 @@
 package festivecreepers.common.init;
 
 import festivecreepers.FestiveCreepers;
-import festivecreepers.client.FestiveHatLayer;
-import festivecreepers.client.FireworksCrateRenderer;
+import festivecreepers.client.render.FestiveHatLayer;
+import festivecreepers.client.render.FestiveLightsLayer;
+import festivecreepers.client.render.FireworksCrateRenderer;
 import festivecreepers.common.entity.FestiveCreeperEntity;
 import festivecreepers.common.entity.FireworksCrateEntity;
 import festivecreepers.common.entity.FireworksCrateMinecartEntity;
 import net.minecraft.client.renderer.entity.CreeperRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
-import net.minecraft.client.renderer.entity.TNTMinecartRenderer;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
@@ -55,6 +55,7 @@ public class EntityTypes {
         RenderingRegistry.registerEntityRenderingHandler(EntityTypes.FESTIVE_CREEPER, (manager) -> {
             CreeperRenderer renderer = new CreeperRenderer(manager);
             renderer.addLayer(new FestiveHatLayer(renderer));
+            renderer.addLayer(new FestiveLightsLayer(renderer));
             return renderer;
         });
         RenderingRegistry.registerEntityRenderingHandler(EntityTypes.FIREWORKS_CRATE, FireworksCrateRenderer::new);

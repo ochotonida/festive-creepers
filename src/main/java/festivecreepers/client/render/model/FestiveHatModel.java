@@ -1,4 +1,4 @@
-package festivecreepers.client.model;
+package festivecreepers.client.render.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

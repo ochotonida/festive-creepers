@@ -1,4 +1,4 @@
-package festivecreepers.client;
+package festivecreepers.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import festivecreepers.common.entity.FireworksCrateEntity;
