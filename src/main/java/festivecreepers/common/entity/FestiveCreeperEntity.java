@@ -69,7 +69,7 @@ public class FestiveCreeperEntity extends CreeperEntity {
         if (isAlive() && hasIgnited()) {
             setMotion(getMotion().getX(), 1, getMotion().getZ());
             if (world.isRemote) {
-                world.addParticle(ParticleTypes.FIREWORK, getPosX(), getPosY() - 0.3, getPosZ(), rand.nextGaussian() * 0.05, -getMotion().y * 0.5, rand.nextGaussian() * 0.05);
+                world.addParticle(ParticleTypes.FIREWORK, getPosX(), getPosY() + 0.5, getPosZ(), rand.nextGaussian() * 0.05, -getMotion().y * 0.5, rand.nextGaussian() * 0.05);
             }
         }
 

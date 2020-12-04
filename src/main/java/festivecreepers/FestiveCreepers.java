@@ -1,5 +1,6 @@
 package festivecreepers;
 
+import festivecreepers.common.Config;
 import festivecreepers.common.entity.FireworksCrateEntity;
 import festivecreepers.common.init.Blocks;
 import festivecreepers.common.init.EntityTypes;
@@ -19,7 +20,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -27,6 +30,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class FestiveCreepers {
 
     public static final String MODID = "festive_creepers";
+
+    public FestiveCreepers() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
+    }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {

@@ -4,6 +4,7 @@ import festivecreepers.FestiveCreepers;
 import festivecreepers.client.render.FestiveHatLayer;
 import festivecreepers.client.render.FestiveLightsLayer;
 import festivecreepers.client.render.FireworksCrateRenderer;
+import festivecreepers.common.Config;
 import festivecreepers.common.entity.FestiveCreeperEntity;
 import festivecreepers.common.entity.FireworksCrateEntity;
 import festivecreepers.common.entity.FireworksCrateMinecartEntity;
@@ -64,10 +65,12 @@ public class EntityTypes {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void addSpawns(BiomeLoadingEvent event) {
-        if (event.getClimate().precipitation == Biome.RainType.SNOW) {
-            event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(EntityTypes.FESTIVE_CREEPER, 20, 1, 4));
-        } else if (isDecember) {
-            event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(EntityTypes.FESTIVE_CREEPER, 10, 1, 2));
+        if (!Config.biomeBlacklist.contains(event.getName()) && event.getCategory() != Biome.Category.NETHER && event.getCategory() != Biome.Category.THEEND) {
+            if (Config.snowyBiomeSpawnWeight > 0 && event.getClimate().precipitation == Biome.RainType.SNOW) {
+                event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(EntityTypes.FESTIVE_CREEPER, Config.snowyBiomeSpawnWeight, 1, 4));
+            } else if (Config.decemberSpawnWeight > 0 && isDecember) {
+                event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(EntityTypes.FESTIVE_CREEPER, Config.decemberSpawnWeight, 1, 2));
+            }
         }
     }
 }
